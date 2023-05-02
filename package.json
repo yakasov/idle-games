@@ -1,0 +1,22 @@
+{
+  "name": "new-tampermonkey-scripts",
+  "version": "1.0.0",
+  "description": "",
+  "main": "Absolute Button Simulator Autoplay.users.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yakasov/new-tampermonkey-scripts.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/yakasov/new-tampermonkey-scripts/issues"
+  },
+  "homepage": "https://github.com/yakasov/new-tampermonkey-scripts#readme",
+  "devDependencies": {
+    "eslint": "^8.39.0"
+  }
+}
