@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Endless Stairwell Autoplay
 // @namespace    https://raw.githubusercontent.com/yakasov/new-tampermonkey-scripts/master/Endless%Stairwell%20Autoplay.users.js
-// @version      1.0.4-TAS
+// @version      1.0.5-TAS
 // @description  Autoplays Endless Stairwell by Demonin
 // @author       yakasov
 // @match        https://demonin.com/games/endlessStairwell/
@@ -554,7 +554,7 @@ class Section5 extends Section4 {
     get shouldCocoaPrestige() {
         return (
             game.cocoaHoney.eq(0) ||
-            (game.roomsExplored >= 500 && game.cocoaHoney.lt("10^^^10^^2")) ||
+            (game.roomsExplored >= 1000 && game.cocoaHoney.lt("10^^^10^^2")) ||
             (cocoaHoneyToGet.gte(darkOrbRequirements[game.darkOrbs]) &&
                 game.cocoaHoney.lt(darkOrbRequirements[game.darkOrbs]))
         );
@@ -618,7 +618,7 @@ class Section7 extends Section5 {
     }
 
     get shouldCocoaPrestige() {
-        if (game.roomsExplored >= 500 && game.currentFloor < 350) {
+        if (game.roomsExplored >= 1000 && game.currentFloor < 350) {
             return true;
         }
 
@@ -860,7 +860,7 @@ let s9 = new Section9(7, {
     0: ExpantaNum.expansion(10, 75),
     1: ExpantaNum.expansion(10, 250),
     2: ExpantaNum.expansion(10, 5000),
-    3: ExpantaNum.expansion(10, 1e6),
+    3: ExpantaNum.expansion(10, 1.3e6),
     6: ExpantaNum.expansion(10, 1e8),
     7: ExpantaNum.expansion(10, 1e10),
     8: ExpantaNum.expansion(10, 1e20),

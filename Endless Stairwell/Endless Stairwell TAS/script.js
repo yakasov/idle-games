@@ -1741,7 +1741,7 @@ function enterFloor() {
         }
     }
     game.roomsExplored++;
-    game.roomsFromStairwell++;
+    game.roomsFromStairwell = 1;
     game.totalDifficulty = ExpantaNum(game.floorDifficulty).add(
         game.roomsExplored / 100
     );
@@ -1821,7 +1821,7 @@ function enterFloor() {
 
 function newRoom() {
     game.roomsExplored++;
-    game.roomsFromStairwell++;
+    game.roomsFromStairwell = 1;
     game.totalDifficulty = ExpantaNum(game.floorDifficulty).add(
         game.roomsExplored / 100
     );
@@ -1955,7 +1955,7 @@ function monsterEncounter() {
     } else if (game.currentFloor <= 250) {
         monsterType = 18;
     } else if (game.currentFloor <= 300) {
-        monsterType = 22;
+        monsterType = 24;
     } else if (game.currentFloor == 303) {
         monsterType = 25;
     } else if (game.currentFloor <= 348) {
