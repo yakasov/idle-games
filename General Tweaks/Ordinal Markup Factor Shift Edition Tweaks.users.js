@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Ordinal Markup: Factor Shift Edition Tweaks
-// @version      0.1.2
+// @version      0.2.0
 // @description  Corrects typos and marks objectives when completed
 // @author       yakasov
 // @match        https://patcailmemer.github.io/om-fse-minus/
@@ -27,6 +27,23 @@ function maxDiagonalizeTypo() {
     const buttons = Array.from(document.getElementsByClassName("normalButton"));
     let typoButton = buttons.find((b) => b.innerText.includes("You finger"));
     typoButton.innerHTML = typoButton.innerHTML.replace("You", "Your");
+}
+
+function addMaxAutoButton() {
+    let el = document.getElementById('dup9');
+    el.insertAdjacentHTML('afterend', `<button class="normalButton" onclick="window.buyMaxAuto()">Max all autobuyers<br>Your fingers will thank me later... again</button>`);
+}
+
+function buyMaxAuto() {
+    const succAmount = EN.affordGeometricSeries(game.DP, 1, 1.1, getExtraSuccAuto());
+    const limAmount = EN.affordGeometricSeries(game.DP, 1, 1.1, getExtraLimAuto());
+
+    for (let i = 1; i <= succAmount; i++) {
+        dup(2);
+    }
+    for (let i = 1; i <= limAmount; i++) {
+        dup(3);
+    }
 }
 
 function setObjectives() {
@@ -118,6 +135,8 @@ function updateObjectiveStatuses() {
 }
 
 maxDiagonalizeTypo();
+window.buyMaxAuto = buyMaxAuto;
+addMaxAutoButton();
 setObjectives();
 setInterval(checkObjectives, 250);
 setInterval(updateObjectiveStatuses, 250);
