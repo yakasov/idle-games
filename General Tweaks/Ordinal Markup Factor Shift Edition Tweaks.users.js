@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Ordinal Markup: Factor Shift Edition Tweaks
-// @version      0.1
+// @version      0.1.1
 // @description  Corrects typos and marks objectives when completed
 // @author       yakasov
 // @match        https://patcailmemer.github.io/om-fse-minus/
@@ -40,28 +40,20 @@ function setObjectives() {
 
 function checkObjectives() {
     for (var objective of objectiveTargets) {
-        if (objective.tag) {
-            if (typeof objective.tag === "string") {
-                objective.obj = updateObjectiveObj(objective.tag);
-            } else {
-                objective.obj = objective.tag;
+        if (!objective.cmp) {
+            let check = objective.val ?
+                ExpantaNum(getObjectiveObj(objective.tag)).gte(objective.val) :
+                objective.tag;
+
+            if (check) {
+                objective.cmp = true;
+                updateObjStyle(objective.id);
             }
-        }
-    }
-
-    if (!objective.cmp) {
-        let check = objective.val
-            ? ExpantaNum(objective.obj).gte(objective.val)
-            : objective.obj;
-
-        if (check) {
-            objective.cmp = true;
-            updateObjStyle(objective.id);
         }
     }
 }
 
-function updateObjectiveObj(tag) {
+function getObjectiveObj(tag) {
     switch (tag) {
         case "ord":
             return game.ord;
@@ -99,11 +91,16 @@ function updateObjectiveStatuses() {
     let el = document.getElementById("objectiveStatuses");
     let elText = "<br>Objective Tracking Debug:<br>";
     for (var objective of objectiveTargets) {
+        let obj = ExpantaNum(getObjectiveObj(objective.tag));
+        let check = objective.val ?
+                obj.gte(objective.val) :
+                objective.tag;
+        
         elText += `${objective.id}: ${objective.cmp} (${
             objective.val
-                ? `[${ExpantaNum(objective.obj).array}] >= ${objective.val}`
+                ? `[${obj.array}] >= ${objective.val}`
                 : "func"
-        })<br>`;
+        }) => ${check ?? 'TODO'}<br>`;
     }
     el.innerHTML = elText;
 }
