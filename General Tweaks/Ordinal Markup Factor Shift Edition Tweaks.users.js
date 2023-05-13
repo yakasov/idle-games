@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Ordinal Markup: Factor Shift Edition Tweaks
-// @version      0.3.1
+// @version      0.3.3
 // @description  Corrects typos and marks objectives when completed
 // @author       yakasov
 // @match        https://patcailmemer.github.io/om-fse-minus/
@@ -16,10 +16,10 @@ let objectiveTargets = [
     { id: "obj3", cmp: false, tag: "func" }, // Get every booster upgrade on the first row
     { id: "obj4", cmp: false, tag: "fac", val: 7 }, // Unlock Factor 8
     { id: "obj5", cmp: false, tag: "func" }, // Get your ordinal to ω^ω^2
-    { id: "obj6", cmp: false }, // TODO: Reach Base 6
+    { id: "obj6", cmp: false, tag: "func" }, // TODO: Reach Base 6
     { id: "obj7", cmp: false, tag: "up", val: 9 }, // Get every booster upgrade
     { id: "obj8", cmp: false, tag: "func" }, // Unlock the next layer
-    { id: "obj9", cmp: false }, // TODO: Unlock the second Omega Factor
+    { id: "obj9", cmp: false, tag: "func" }, // Unlock the second Omega Factor
     { id: "obj10", cmp: false, tag: "op", val: 1.79e308 }, // Get your Ordinal Points above 1.8e308
 ];
 
@@ -113,8 +113,12 @@ function getObjectiveCheck(id) {
             return obj3Check();
         case "obj5":
             return obj5Check();
+        case "obj6":
+            return obj6Check();
         case "obj8":
             return obj8Check();
+        case "obj9":
+            return obj9Check();
         default:
             return false;
     }
@@ -132,11 +136,19 @@ function obj3Check() {
 }
 
 function obj5Check() {
-    return game.ord.gte(game.base ** (game.base ** 2)); // if this doesn't work try >=
+    return game.ord >= game.base ** (game.base ** 2);
+}
+
+function obj6Check() {
+    return game.base <= 8;
 }
 
 function obj8Check() {
     return game.upgrades.indexOf(4) !== -1;
+}
+
+function obj9Check() {
+    return game.pupgrades.includes(7);
 }
 
 function updateObjectiveStatuses() {
