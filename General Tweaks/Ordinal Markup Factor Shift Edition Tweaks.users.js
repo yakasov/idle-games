@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Ordinal Markup: Factor Shift Edition Tweaks
-// @version      0.1.1
+// @version      0.1.2
 // @description  Corrects typos and marks objectives when completed
 // @author       yakasov
 // @match        https://patcailmemer.github.io/om-fse-minus/
@@ -13,12 +13,12 @@ let objectiveTargets = [
     { id: "obj0", cmp: false, tag: "ord", val: 20 }, // Reach the number 20
     { id: "obj1", cmp: false, tag: "op", val: 1 }, // Perform an Infinity
     { id: "obj2", cmp: false, tag: "fac", val: 1 }, // Perform a Factor Shift
-    { id: "obj3", cmp: false, tag: obj3Check() }, // Get every booster upgrade on the first row
+    { id: "obj3", cmp: false, tag: "func" }, // Get every booster upgrade on the first row
     { id: "obj4", cmp: false, tag: "fac", val: 7 }, // Unlock Factor 8
-    { id: "obj5", cmp: false, tag: obj5Check() }, // Get your ordinal to ω^ω^2
+    { id: "obj5", cmp: false, tag: "func" }, // Get your ordinal to ω^ω^2
     { id: "obj6", cmp: false }, // TODO: Reach Base 6
     { id: "obj7", cmp: false, tag: "up", val: 9 }, // Get every booster upgrade
-    { id: "obj8", cmp: false, tag: obj8Check() }, // Unlock the next layer
+    { id: "obj8", cmp: false, tag: "func" }, // Unlock the next layer
     { id: "obj9", cmp: false }, // TODO: Unlock the second Omega Factor
     { id: "obj10", cmp: false, tag: "op", val: 1.79e308 }, // Get your Ordinal Points above 1.8e308
 ];
@@ -41,9 +41,8 @@ function setObjectives() {
 function checkObjectives() {
     for (var objective of objectiveTargets) {
         if (!objective.cmp) {
-            let check = objective.val ?
-                ExpantaNum(getObjectiveObj(objective.tag)).gte(objective.val) :
-                objective.tag;
+            let obj = getObjectiveObj(objective.tag ?? 0, objective.id);
+            let check = objective.val ? ExpantaNum(obj).gte(objective.val) : obj;
 
             if (check) {
                 objective.cmp = true;
@@ -53,7 +52,7 @@ function checkObjectives() {
     }
 }
 
-function getObjectiveObj(tag) {
+function getObjectiveObj(tag, id) {
     switch (tag) {
         case "ord":
             return game.ord;
@@ -63,8 +62,23 @@ function getObjectiveObj(tag) {
             return game.factors.length;
         case "up":
             return game.upgrades.length;
+        case "func":
+            return getObjectiveCheck(id);
         default:
-            return;
+            return false;
+    }
+}
+
+function getObjectiveCheck(id) {
+    switch (id) {
+        case "obj3":
+            return obj3Check();
+        case "obj5":
+            return obj5Check();
+        case "obj8":
+            return obj8Check();
+        default:
+            return false;
     }
 }
 
@@ -91,14 +105,12 @@ function updateObjectiveStatuses() {
     let el = document.getElementById("objectiveStatuses");
     let elText = "<br>Objective Tracking Debug:<br>";
     for (var objective of objectiveTargets) {
-        let obj = ExpantaNum(getObjectiveObj(objective.tag));
-        let check = objective.val ?
-                obj.gte(objective.val) :
-                objective.tag;
-        
+        let obj = getObjectiveObj(objective.tag ?? 0, objective.id);
+        let check = objective.val ? ExpantaNum(obj).gte(objective.val) : obj;
+
         elText += `${objective.id}: ${objective.cmp} (${
             objective.val
-                ? `[${obj.array}] >= ${objective.val}`
+                ? `[${ExpantaNum(obj).array}] >= ${objective.val}`
                 : "func"
         }) => ${check ?? 'TODO'}<br>`;
     }
