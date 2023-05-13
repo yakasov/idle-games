@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Ordinal Markup: Factor Shift Edition Tweaks
-// @version      0.2.1
+// @version      0.2.2
 // @description  Corrects typos and marks objectives when completed
 // @author       yakasov
 // @match        https://patcailmemer.github.io/om-fse-minus/
@@ -39,11 +39,11 @@ function buyMaxAuto() {
     const limAmount = EN.affordGeometricSeries(game.DP, 1, 1.1, getExtraLimAuto());
 
     for (let i = 1; i <= Math.max(succAmount, limAmount); i++) {
-        if (i <= succAmount && getExtraSuccAuto() <= getExtraLimAuto()) {
+        if (i <= succAmount && getExtraSuccAuto().lte(getExtraLimAuto())) {
             dup(2);
         }
 
-        if (i <= limAmount && getExtraLimAuto() <= getExtraSuccAuto()) {
+        if (i <= limAmount && getExtraLimAuto().lte(getExtraSuccAuto())) {
             dup(3);
         }
     }
