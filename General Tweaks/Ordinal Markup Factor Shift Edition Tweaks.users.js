@@ -26,7 +26,7 @@ let objectiveTargets = [
 function maxDiagonalizeTypo() {
     const buttons = Array.from(document.getElementsByClassName("normalButton"));
     let typoButton = buttons.find((b) => b.innerText.includes("You finger"));
-    typoButton.innerText = typoButton.innerText.replace("You", "Your");
+    typoButton.innerHTML = typoButton.innerHTML.replace("You", "Your");
 }
 
 function setObjectives() {
