@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Ordinal Markup: Factor Shift Edition Tweaks
-// @version      0.2.2
+// @version      0.3.0
 // @description  Corrects typos and marks objectives when completed
 // @author       yakasov
 // @match        https://patcailmemer.github.io/om-fse-minus/
@@ -47,6 +47,22 @@ function buyMaxAuto() {
             dup(3);
         }
     }
+}
+
+function checkBoosters() {
+    let boostersDisplay = document.getElementById('boosterTabButton');
+    boostersDisplay.style.width = '140px';
+    let el = document.getElementsByClassName('trueCenter long')[1];
+    let buttons = Array.from(el.getElementsByTagName('button'));
+    boostersDisplay.innerText = 'Boosters' + (buttons.some(b => b.classList.contains('canbuy')) ? ' (!)' : '');
+}
+
+function checkProducts() {
+    let productsDisplay = document.getElementById('productTabButton');
+    productsDisplay.style.width = '140px';
+    let el = document.getElementsByClassName('trueCenter long')[3];
+    let buttons = Array.from(el.getElementsByTagName('button'));
+    productsDisplay.innerText = 'Products' + (buttons.some(b => b.classList.contains('canbuy')) ? ' (!)' : '');
 }
 
 function setObjectives() {
@@ -138,8 +154,13 @@ function updateObjectiveStatuses() {
 }
 
 maxDiagonalizeTypo();
+checkBoosters();
+checkProducts();
 window.buyMaxAuto = buyMaxAuto;
 addMaxAutoButton();
 setObjectives();
+
+setInterval(checkBoosters, 250);
+setInterval(checkProducts, 250);
 setInterval(checkObjectives, 250);
 setInterval(updateObjectiveStatuses, 250);
