@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Ordinal Markup: Factor Shift Edition Tweaks
-// @version      0.3.0
+// @version      0.3.1
 // @description  Corrects typos and marks objectives when completed
 // @author       yakasov
 // @match        https://patcailmemer.github.io/om-fse-minus/
@@ -54,7 +54,8 @@ function checkBoosters() {
     boostersDisplay.style.width = '140px';
     let el = document.getElementsByClassName('trueCenter long')[1];
     let buttons = Array.from(el.getElementsByTagName('button'));
-    boostersDisplay.innerText = 'Boosters' + (buttons.some(b => b.classList.contains('canbuy')) ? ' (!)' : '');
+    let showWarning = buttons.some(b => b.classList.contains('canbuy') && b.style.display !== 'none');
+    boostersDisplay.innerText = 'Boosters' + (showWarning ? ' (!)' : '');
 }
 
 function checkProducts() {
@@ -62,7 +63,8 @@ function checkProducts() {
     productsDisplay.style.width = '140px';
     let el = document.getElementsByClassName('trueCenter long')[3];
     let buttons = Array.from(el.getElementsByTagName('button'));
-    productsDisplay.innerText = 'Products' + (buttons.some(b => b.classList.contains('canbuy')) ? ' (!)' : '');
+    let showWarning = buttons.some(b => b.classList.contains('canbuy') && b.style.display !== 'none');
+    productsDisplay.innerText = 'Products' + (showWarning ? ' (!)' : '');
 }
 
 function setObjectives() {
