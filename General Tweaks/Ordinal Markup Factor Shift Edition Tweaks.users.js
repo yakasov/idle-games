@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Ordinal Markup: Factor Shift Edition Tweaks
-// @version      0.3.3
+// @version      0.4.0
 // @description  Corrects typos and marks objectives when completed
 // @author       yakasov
 // @match        https://patcailmemer.github.io/om-fse-minus/
@@ -16,12 +16,19 @@ let objectiveTargets = [
     { id: "obj3", cmp: false, tag: "func" }, // Get every booster upgrade on the first row
     { id: "obj4", cmp: false, tag: "fac", val: 7 }, // Unlock Factor 8
     { id: "obj5", cmp: false, tag: "func" }, // Get your ordinal to ω^ω^2
-    { id: "obj6", cmp: false, tag: "func" }, // TODO: Reach Base 6
+    { id: "obj6", cmp: false, tag: "func" }, // Reach Base 6
     { id: "obj7", cmp: false, tag: "up", val: 9 }, // Get every booster upgrade
     { id: "obj8", cmp: false, tag: "func" }, // Unlock the next layer
     { id: "obj9", cmp: false, tag: "func" }, // Unlock the second Omega Factor
     { id: "obj10", cmp: false, tag: "op", val: 1.79e308 }, // Get your Ordinal Points above 1.8e308
 ];
+const factorizeMilestones = [
+    { id: "fact0", amount: 1 },
+    { id: "fact1", amount: 2 },
+    { id: "fact2", amount: 6 },
+    { id: "fact3", amount: 24 },
+    { id: "fact4", amount: 120 }
+]
 
 function maxDiagonalizeTypo() {
     const buttons = Array.from(document.getElementsByClassName("normalButton"));
@@ -31,7 +38,7 @@ function maxDiagonalizeTypo() {
 
 function addMaxAutoButton() {
     let el = document.getElementById('dup9');
-    el.insertAdjacentHTML('afterend', `<button class="normalButton" onclick="window.buyMaxAuto()">Max all autobuyers<br>Your fingers will thank me later... again</button>`);
+    el.insertAdjacentHTML('afterend', `<button class="normalButton" onclick="window.buyMaxAuto()">Max all autobuyers<br>Your finger will thank me later... again</button>`);
 }
 
 function buyMaxAuto() {
@@ -65,6 +72,17 @@ function checkProducts() {
     let buttons = Array.from(el.getElementsByTagName('button'));
     let showWarning = buttons.some(b => b.classList.contains('canbuy') && b.style.display !== 'none');
     productsDisplay.innerText = 'Products' + (showWarning ? ' (!)' : '');
+}
+
+function checkFactorizeMilestones() {
+    for (var milestone of factorizeMilestones) {
+        if (game.mostFactorizedOnce.gte(milestone.amount)) {
+            let el = document.getElementById(milestone.id);
+            el.style = 'background: #00FF00; color: black';
+        } else {
+            return;
+        }
+    }
 }
 
 function setObjectives() {
@@ -176,5 +194,6 @@ setObjectives();
 
 setInterval(checkBoosters, 250);
 setInterval(checkProducts, 250);
+setInterval(checkFactorizeMilestones, 250);
 setInterval(checkObjectives, 250);
 setInterval(updateObjectiveStatuses, 250);
