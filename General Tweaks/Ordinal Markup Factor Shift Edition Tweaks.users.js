@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Ordinal Markup: Factor Shift Edition Tweaks
-// @version      0.4.0
+// @version      0.4.1
 // @description  Corrects typos and marks objectives when completed
 // @author       yakasov
 // @match        https://patcailmemer.github.io/om-fse-minus/
@@ -38,7 +38,8 @@ function maxDiagonalizeTypo() {
 
 function addMaxAutoButton() {
     let el = document.getElementById('dup9');
-    el.insertAdjacentHTML('afterend', `<button class="normalButton" onclick="window.buyMaxAuto()">Max all autobuyers<br>Your finger will thank me later... again</button>`);
+    el.insertAdjacentHTML('afterend',
+                          `<button class="normalButton" onclick="window.buyMaxAuto()">Max all autobuyers<br>Your finger will thank me later... again</button>`);
 }
 
 function buyMaxAuto() {
@@ -58,23 +59,34 @@ function buyMaxAuto() {
 
 function checkBoosters() {
     let boostersDisplay = document.getElementById('boosterTabButton');
-    boostersDisplay.style.width = '140px';
     let el = document.getElementsByClassName('trueCenter long')[1];
     let buttons = Array.from(el.getElementsByTagName('button'));
     let showWarning = buttons.some(b => b.classList.contains('canbuy') && b.style.display !== 'none');
+
+    boostersDisplay.style.width = '140px';
     boostersDisplay.innerText = 'Boosters' + (showWarning ? ' (!)' : '');
 }
 
 function checkProducts() {
     let productsDisplay = document.getElementById('productTabButton');
-    productsDisplay.style.width = '140px';
     let el = document.getElementsByClassName('trueCenter long')[3];
     let buttons = Array.from(el.getElementsByTagName('button'));
     let showWarning = buttons.some(b => b.classList.contains('canbuy') && b.style.display !== 'none');
+
+    productsDisplay.style.width = '140px';
     productsDisplay.innerText = 'Products' + (showWarning ? ' (!)' : '');
 }
 
+function addBestFactorized() {
+    let el = document.getElementById('factMile');
+    el.insertAdjacentHTML('afterend',
+                          `<h4 id="bestFactorized" style="font-weight: normal; text-align: center">Current best: ${beautify(game.mostFactorizedOnce)}</h4>`);
+}
+
 function checkFactorizeMilestones() {
+    let el = document.getElementById('bestFactorized');
+    el.innerText = `Current best: ${beautify(game.mostFactorizedOnce)}`
+
     for (var milestone of factorizeMilestones) {
         if (game.mostFactorizedOnce.gte(milestone.amount)) {
             let el = document.getElementById(milestone.id);
@@ -190,6 +202,7 @@ checkBoosters();
 checkProducts();
 window.buyMaxAuto = buyMaxAuto;
 addMaxAutoButton();
+addBestFactorized();
 setObjectives();
 
 setInterval(checkBoosters, 250);
